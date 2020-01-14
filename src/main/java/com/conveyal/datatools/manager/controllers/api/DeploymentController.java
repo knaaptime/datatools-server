@@ -1,6 +1,7 @@
 package com.conveyal.datatools.manager.controllers.api;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
@@ -61,7 +62,7 @@ public class DeploymentController {
     private static JsonManager<Deployment> json = new JsonManager<>(Deployment.class, JsonViews.UserInterface.class);
     private static final Logger LOG = LoggerFactory.getLogger(DeploymentController.class);
     private static Map<String, DeployJob> deploymentJobsByServer = new HashMap<>();
-    private static final AmazonEC2 ec2 = AmazonEC2Client.builder().build();
+    private static final AmazonEC2 ec2 = AmazonEC2Client.builder().withRegion(Regions.EU_CENTRAL_1).build();
 
     /**
      * Gets the deployment specified by the request's id parameter and ensure that user has access to the

@@ -7,6 +7,7 @@ import com.amazonaws.auth.AWSSessionCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.auth.STSAssumeRoleSessionCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.s3.AmazonS3;
@@ -158,7 +159,7 @@ public class AWSUtils {
      * credentials will be used.
      */
     public static AmazonEC2 getEC2ClientForCredentials (AWSCredentialsProvider credentials) {
-        return AmazonEC2Client.builder().withCredentials(credentials).build();
+        return AmazonEC2Client.builder().withRegion(Regions.EU_CENTRAL_1).withCredentials(credentials).build();
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.conveyal.datatools.manager.controllers.api;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ec2.model.AmazonEC2Exception;
@@ -75,9 +76,9 @@ import static spark.Spark.put;
 public class ServerController {
     private static JsonManager<OtpServer> json = new JsonManager<>(OtpServer.class, JsonViews.UserInterface.class);
     private static final Logger LOG = LoggerFactory.getLogger(ServerController.class);
-    private static final AmazonEC2 ec2 = AmazonEC2Client.builder().build();
-    private static final AmazonIdentityManagement iam = AmazonIdentityManagementClientBuilder.defaultClient();
-    private static final AmazonElasticLoadBalancing elb = AmazonElasticLoadBalancingClient.builder().build();
+    private static final AmazonEC2 ec2 = AmazonEC2Client.builder().withRegion(Regions.EU_CENTRAL_1).build();
+    private static final AmazonIdentityManagement iam = AmazonIdentityManagementClientBuilder.standard().withRegion(Regions.EU_CENTRAL_1).build();
+    private static final AmazonElasticLoadBalancing elb = AmazonElasticLoadBalancingClient.builder().withRegion(Regions.EU_CENTRAL_1).build();
 
     /**
      * Gets the server specified by the request's id parameter and ensure that user has access to the
@@ -250,7 +251,7 @@ public class ServerController {
             AWSStaticCredentialsProvider credentials = AWSUtils.getCredentialsForRole(server.role, "validate");
             // If alternative credentials exist, override the default AWS clients.
             if (credentials != null) {
-                ec2Client = AmazonEC2Client.builder().withCredentials(credentials).build();
+                ec2Client = AmazonEC2Client.builder().withRegion(Regions.EU_CENTRAL_1).withCredentials(credentials).build();
                 iamClient = AmazonIdentityManagementClientBuilder.standard().withCredentials(credentials).build();
                 s3Client = AWSUtils.getS3ClientForRole(server.role, null);
             }
